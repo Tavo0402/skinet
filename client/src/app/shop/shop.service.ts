@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { IType } from '../shared/interfaces/productType';
 import { map } from 'rxjs/operators';
 import { ShopParams } from '../shared/interfaces/shopParams';
+import { IProduct } from '../shared/interfaces/product';
 @Injectable({
   providedIn: 'root',
 })
@@ -47,5 +48,9 @@ export class ShopService {
   }
   getTypes() {
     return this.http.get<IType[]>(environment.baseUrl + 'products/types');
+  }
+
+  getProduct(id: number) {
+    return this.http.get<IProduct>(environment.baseUrl + 'products/' + id);
   }
 }
