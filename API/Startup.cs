@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using API.Helpers;
 using API.Middleware;
 using API.Extensions;
+using StackExchange.Redis;
 
 namespace API
 {
@@ -25,6 +26,10 @@ namespace API
         {
             services.AddControllers();
             services.AddDbContext<StoreContext>(x => x.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddSingleton<IConnectionMultiplexer>(c => {
+                var configuration = ConfigurationOptions.Parse(_configuration.GetConnectionString("Redis"), true);
+                return ConnectionMultiplexer.Connect(configuration);
+            });
             services.AddApplicationServices();
             services.AddSwaggerDocumentation();
             services.AddAutoMapper(typeof(MappingProfiles));
